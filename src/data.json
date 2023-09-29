@@ -1,0 +1,11 @@
+{
+    "channels": [ "HTML", "CSS", "Javascript" ],
+    "posts": [
+        { "channel": "HTML", "time": "2:57am", "user": "Sam", "content": "DM me for project ideas!" },
+        { "channel": "HTML", "time": "5:04am", "user": "Alex", "content": "Can I get some help with forms?" },
+        { "channel": "HTML", "time": "9:46am", "user": "Bobby", "content": "What's up?" },
+        { "channel": "CSS", "time": "4:09am", "user": "Bobby", "content": "CSS is OK." },
+        { "channel": "Javascript", "time": "2:57am", "user": "Sam", "content": "DM me for project ideas!" },
+        { "channel": "Javascript", "time": "3:33pm", "user": "Alex", "content": "What framework do you all prefer?" }
+    ]
+}

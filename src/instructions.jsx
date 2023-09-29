@@ -1,0 +1,3 @@
+export default function App() {
+    return "This project contains seven approaches to the same simple test app. Each approach produces the same element tree, but manages state differently in the code. Each component in each version logs its name to the console to make it easy to track rerenders. Get started by disabling line 3 in index.js and enabling one of the lines from 4 to 10 instead, and looking over the associated .jsx file."
+}
