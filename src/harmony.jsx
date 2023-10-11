@@ -4,15 +4,15 @@ import data from "./data"
 let Posts = function() {
     console.log("Posts")
     state.Posts = react.useState()
-    let posts = []
-    for (let post in data.posts) {
-        if ((data.posts[post].channel === data.channels[currentChannel]) && ((data.posts[post].user !== "Sam") || showSpam)) {
-            posts.push(<p key = {post}>
-                {data.posts[post].time} <span>{data.posts[post].user}</span>: {data.posts[post].content}
-            </p>)
+    return data.posts.map(function(post, key) {
+        if ((post.channel === currentChannel) && ((post.user !== "Sam") || showSpam)) {
+            return <p key = {key}>
+                {post.time} <span>{post.user}</span>: {post.content}
+            </p>
+        } else {
+            return undefined
         }
-    }
-    return posts
+    })
 }
 let render = function(components) {
     for (let component in components) {
@@ -20,23 +20,21 @@ let render = function(components) {
     }
 }
 let state = {}
-let currentChannel = "0"
+let currentChannel = "HTML"
 let showSpam
-let channels = []
-for (let channel in data.channels) {
-    channels[channel] = <label key = {channel}>
-        <input type = {"radio"} defaultChecked = {channel === currentChannel} onClick = {function() {
-            currentChannel = channel
-            render(["Posts"])
-        }} name = {"channel"} />
-        {data.channels[channel]}
-    </label>
-}
 export default function App() {
     console.log("App")
     return <>
         <form>
-            {channels}
+            {data.channels.map(function(channel) {
+                return <label key = {channel}>
+                    <input type = {"radio"} defaultChecked = {channel === currentChannel} onClick = {function() {
+                        currentChannel = channel
+                        render(["Posts"])
+                    }} name = {"channel"} />
+                    {channel}
+                </label>
+            })}
         </form>
         <div>
             <div>

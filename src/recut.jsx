@@ -7,31 +7,29 @@ let Posts = function() {
     let listener = react.useState()
     recut.listen("currentChannel", listener)
     recut.listen("showSpam", listener)
-    let posts = []
-    for (let post in data.posts) {
-        if ((data.posts[post].channel === data.channels[recut.currentChannel]) && ((data.posts[post].user !== "Sam") || recut.showSpam)) {
-            posts.push(<p key = {post}>
-                {data.posts[post].time} <span>{data.posts[post].user}</span>: {data.posts[post].content}
-            </p>)
+    return data.posts.map(function(post, key) {
+        if ((post.channel === recut.currentChannel) && ((post.user !== "Sam") || recut.showSpam)) {
+            return <p key = {key}>
+                {post.time} <span>{post.user}</span>: {post.content}
+            </p>
+        } else {
+            return undefined
         }
-    }
-    return posts
+    })
 }
-recut.currentChannel = "0"
-let channels = []
-for (let channel in data.channels) {
-    channels[channel] = <label key = {channel}>
-        <input type = {"radio"} defaultChecked = {channel === recut.currentChannel} onClick = {function() {
-            recut.dispatch("currentChannel", channel)
-        }} name = {"channel"} />
-        {data.channels[channel]}
-    </label>
-}
+recut.currentChannel = "HTML"
 export default function App() {
     console.log("App")
     return <>
         <form>
-            {channels}
+            {data.channels.map(function(channel) {
+                return <label key = {channel}>
+                    <input type = {"radio"} defaultChecked = {channel === recut.currentChannel} onClick = {function() {
+                        recut.dispatch("currentChannel", channel)
+                    }} name = {"channel"} />
+                    {channel}
+                </label>
+            })}
         </form>
         <div>
             <div>

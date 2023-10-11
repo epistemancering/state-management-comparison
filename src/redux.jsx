@@ -6,17 +6,17 @@ let Posts = function() {
     console.log("Posts")
     let currentChannel = reactRedux.useSelector(select.channel)
     let showSpam = reactRedux.useSelector(select.spam)
-    let posts = []
-    for (let post in data.posts) {
-        if ((data.posts[post].channel === data.channels[currentChannel]) && ((data.posts[post].user !== "Sam") || showSpam)) {
-            posts.push(<p key = {post}>
-                {data.posts[post].time} <span>{data.posts[post].user}</span>: {data.posts[post].content}
-            </p>)
+    return data.posts.map(function(post, key) {
+        if ((post.channel === currentChannel) && ((post.user !== "Sam") || showSpam)) {
+            return <p key = {key}>
+                {post.time} <span>{post.user}</span>: {post.content}
+            </p>
+        } else {
+            return undefined
         }
-    }
-    return posts
+    })
 }
-let defaults = { channel: "0", spam: undefined }
+let defaults = { channel: "HTML", spam: undefined }
 let store = reduxjs.configureStore({
     reducer: function(state, input) {
         if (input.value === undefined) {
@@ -31,20 +31,18 @@ for (let slice in defaults) {
         return store[slice]
     }
 }
-let channels = []
-for (let channel in data.channels) {
-    channels[channel] = <label key = {channel}>
-        <input type = {"radio"} defaultChecked = {channel === defaults.channel} onClick = {function() {
-            store.dispatch({ type: "channel", value: channel })
-        }} name = {"channel"} />
-        {data.channels[channel]}
-    </label>
-}
 export default function App() {
     console.log("App")
     return <>
         <form>
-            {channels}
+            {data.channels.map(function(channel) {
+                return <label key = {channel}>
+                    <input type = {"radio"} defaultChecked = {channel === defaults.channel} onClick = {function() {
+                        store.dispatch({ type: "channel", value: channel })
+                    }} name = {"channel"} />
+                    {channel}
+                </label>
+            })}
         </form>
         <div>
             <div>

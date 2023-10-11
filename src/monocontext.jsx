@@ -4,29 +4,19 @@ import data from "./data"
 let Channels = function() {
     console.log("Channels")
     let currentChannel = react.useContext(context)
-    let channels = []
-    for (let channel in data.channels) {
-        channels[channel] = <label key = {channel}>
+    return data.channels.map(function(channel) {
+        return <label key = {channel}>
             <input type = {"radio"} defaultChecked = {channel === currentChannel[0]} onClick = {function() {
                 currentChannel[1](channel)
             }} name = {"channel"} />
-            {data.channels[channel]}
+            {channel}
         </label>
-    }
-    return channels
+    })
 }
 let Posts = function() {
     console.log("Posts")
     let currentChannel = react.useContext(context)
     let showSpam = react.useState()
-    let posts = []
-    for (let post in data.posts) {
-        if ((data.posts[post].channel === data.channels[currentChannel[0]]) && ((data.posts[post].user !== "Sam") || showSpam[0])) {
-            posts.push(<p key = {post}>
-                {data.posts[post].time} <span>{data.posts[post].user}</span>: {data.posts[post].content}
-            </p>)
-        }
-    }
     return <>
         <div>
             <label>
@@ -36,13 +26,21 @@ let Posts = function() {
                 show likely spam
             </label>
         </div>
-        {posts}
+        {data.posts.map(function(post, key) {
+            if ((post.channel === currentChannel[0]) && ((post.user !== "Sam") || showSpam[0])) {
+                return <p key = {key}>
+                    {post.time} <span>{post.user}</span>: {post.content}
+                </p>
+            } else {
+                return undefined
+            }
+        })}
     </>
 }
 let context = react.createContext()
 export default function App() {
     console.log("App")
-    return <context.Provider value = {react.useState("0")}>
+    return <context.Provider value = {react.useState("HTML")}>
         <form>
             <Channels />
         </form>

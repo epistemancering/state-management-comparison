@@ -4,14 +4,6 @@ import data from "./data"
 let Posts = function(props) {
     console.log("Posts")
     let showSpam = react.useState()
-    let posts = []
-    for (let post in data.posts) {
-        if ((data.posts[post].channel === data.channels[props.channel]) && ((data.posts[post].user !== "Sam") || showSpam[0])) {
-            posts.push(<p key = {post}>
-                {data.posts[post].time} <span>{data.posts[post].user}</span>: {data.posts[post].content}
-            </p>)
-        }
-    }
     return <>
         <div>
             <label>
@@ -21,24 +13,30 @@ let Posts = function(props) {
                 show likely spam
             </label>
         </div>
-        {posts}
+        {data.posts.map(function(post, key) {
+            if ((post.channel === props.channel) && ((post.user !== "Sam") || showSpam[0])) {
+                return <p key = {key}>
+                    {post.time} <span>{post.user}</span>: {post.content}
+                </p>
+            } else {
+                return undefined
+            }
+        })}
     </>
 }
 export default function App() {
     console.log("App")
-    let currentChannel = react.useState("0")
-    let channels = []
-    for (let channel in data.channels) {
-        channels[channel] = <label key = {channel}>
-            <input type = {"radio"} defaultChecked = {channel === currentChannel[0]} onClick = {function() {
-                currentChannel[1](channel)
-            }} name = {"channel"} />
-            {data.channels[channel]}
-        </label>
-    }
+    let currentChannel = react.useState("HTML")
     return <>
         <form>
-            {channels}
+            {data.channels.map(function(channel) {
+                return <label key = {channel}>
+                    <input type = {"radio"} defaultChecked = {channel === currentChannel[0]} onClick = {function() {
+                        currentChannel[1](channel)
+                    }} name = {"channel"} />
+                    {channel}
+                </label>
+            })}
         </form>
         <div>
             <Posts channel = {currentChannel[0]} />
